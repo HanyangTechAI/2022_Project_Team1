@@ -17,7 +17,7 @@ import pandas as pd
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModelForSeq2SeqLM
 
-@st.cache(allow_output_mutation=True, suppress_st_warning=True, max_entries=1)
+@st.cache(show_spinner=False, allow_output_mutation=True, suppress_st_warning=True, max_entries=1)
 def load_classification_model():
     with st.spinner("Loading model for classification..."):
         os.makedirs('./models', exist_ok=True)
@@ -28,14 +28,14 @@ def load_classification_model():
         open('./models/model.pth', 'wb').write(model_response.content)
 
         model_ckpt = "monologg/koelectra-small-v3-discriminator"
-        model = AutoModelForSequenceClassification.from_pretrained(model_ckpt).to('cuda')
+        model = AutoModelForSequenceClassification.from_pretrained(model_ckpt, num_labels=2).to('cuda')
         tokenizer = AutoTokenizer.from_pretrained(model_ckpt)
 
         state = torch.load('./models/model.pth', map_location='cuda')
         model.load_state_dict(state, strict=False)
         return model, tokenizer
 
-@st.cache(allow_output_mutation=True, suppress_st_warning=True, max_entries=1)
+@st.cache(show_spinner=False, allow_output_mutation=True, suppress_st_warning=True, max_entries=1)
 def load_translation_models():
     with st.spinner("Loading models for translation..."):
 
