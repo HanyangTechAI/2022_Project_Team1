@@ -17,6 +17,8 @@ import pandas as pd
 
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModelForSeq2SeqLM
 
+st.set_page_config(layout="wide")
+
 @st.cache(show_spinner=False, allow_output_mutation=True, suppress_st_warning=True, max_entries=1)
 def load_classification_model():
     with st.spinner("Loading model for classification..."):
